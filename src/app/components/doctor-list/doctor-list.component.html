@@ -1,0 +1,28 @@
+
+<div class="container mt-5 table-responsive">
+  <p class="text-lg fs-3">Doctors List</p>
+    <table class="table table-light table-borderless align-middle" >
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">UserName</th>
+          <th scope="col">Email</th>
+          <th scope="col">Phone</th>
+          <th scope="col">City</th>
+          <th scope="col">Website</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let list of doctors">
+          <th scope="row">{{list.name}}</th>
+          <td>{{list.username}} </td>
+          <td>{{list.email}}</td>
+          <td>{{list.phone}}</td>
+          <td>{{list.address?list.address.city:list.city}}</td>
+          <td>{{list.website}}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+  </div>
+

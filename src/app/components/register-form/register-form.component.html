@@ -1,0 +1,103 @@
+<p class="text-lg fs-3">Register New Doctor</p>
+<form  (ngSubmit)="onSubmit()" [formGroup]="register" novalidate>
+    <div class="row">
+       <div class="col">
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control shadow-none" formControlName="name" required>
+         </div>
+          <div *ngIf="m.name.touched && m.name.invalid" class="alert alert-danger">
+        <div *ngIf="m.name.errors?.required">Name is required</div>
+        </div>
+        
+       </div>
+      <div class="col">
+        <div class=" mb-3">
+            <label class="form-label">UserName</label>
+            <input type="text" class="form-control shadow-none" formControlName="username" required>
+         </div>
+         <div *ngIf="m.username.touched && m.username.invalid" class="alert alert-danger">
+          <div *ngIf="m.username.errors?.required">UserName is required</div>
+          </div>
+            
+      </div>
+      <div class="col">
+        <div class=" mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control shadow-none" formControlName="email" placeholder="example@gmail.com">
+         </div>
+      
+         <div *ngIf="m.email.invalid && m.email.touched" class="alert alert-danger">
+          <div *ngIf="m.email.errors">Email is required.</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="phone" class="form-control shadow-none" formControlName="phone" minlength="11" maxlength="11" placeholder="08085017997">
+        
+         </div>
+         
+         <div *ngIf="m.phone.invalid && m.phone.touched" class="alert alert-danger">
+          <div *ngIf="m.phone.errors?.required">Phone Number is required.</div>
+          <div *ngIf="m.phone.errors?.minlength">Phone Number must be 11 character</div>
+        </div>
+      </div>
+      <div class="col"> 
+        <div class=" mb-3">
+        <label class="form-label">City</label>
+        <input type="text" class="form-control shadow-none" formControlName="city">
+     </div>
+
+     <div *ngIf="m.city.touched && m.city.invalid" class="alert alert-danger">
+      <div *ngIf="m.city.errors?.required">City is required</div>
+      </div>
+      
+
+    </div>
+      <div class="col">
+
+        <div class=" mb-3">
+            <label class="form-label">Website</label>
+            <input type="text" class="form-control shadow-none" formControlName="website" placeholder="www.google.com">
+         </div>
+
+         <div *ngIf="m.website.invalid && m.website.touched" class="alert alert-danger">
+          <div *ngIf="m.website.errors?.required">Please provide url</div>
+          <div *ngIf="m.website.errors?.pattern">Please provide valid website</div>
+           </div> 
+      </div>
+    </div>
+    <div class="row">
+      <div class="col"></div>
+      <div class="col"></div>
+      <div class="col d-flex flex-row-reverse">
+        <button type="submit" class="btn btn-dark btn-lg  btn-s">Register</button></div>
+    </div>
+    
+  </form>
+
+
+  
+  <div class="container mt-5 w-75">
+    <form class="d-flex" (ngSubmit)="searchDoctors()" [formGroup]="searchForm" novalidate>
+      <input class="form-control shadow-none" type="search" 
+      [(ngModel)]="keyWord"
+      formControlName="keyword"
+      placeholder="Search by name or username(e.g ahmodu ismail or @Bret" aria-label="Search">
+      <button class="btn btn-outline-primary" type="submit" >Search</button>
+    </form>
+
+    
+  <div *ngIf="s.keyword.invalid && s.keyword.touched" class="alert alert-danger w-50">
+    <div *ngIf="s.keyword.errors?.required">Please enter keyword</div>
+     </div>
+
+  </div>
+  <div class="container">
+    <app-doctor-list #ch></app-doctor-list>
+  </div>
+
