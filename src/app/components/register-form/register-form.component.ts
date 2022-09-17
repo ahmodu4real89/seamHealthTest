@@ -15,16 +15,18 @@ export class RegisterFormComponent implements OnInit {
   queryString:string;
   keyWord:string;
   register!: FormGroup;
-  searchForm!:FormGroup
+  searchForm!:FormGroup;
+  emailPattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
+  webPattern="(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?";
   ngOnInit(): void {
 
     this.register=this.fb.group({
       name:["", Validators.required],
-      username:["", Validators.required],
-      email:["", [Validators.required,  Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
+      username:["", Validators.required ],
+      email:["", [Validators.required,  Validators.pattern(this.emailPattern)]],
       phone:["", Validators.required],
-      city:["", Validators.required],
-      website:["", [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
+      city:["", Validators.required ],
+      website:["", [Validators.required, Validators.pattern(this.webPattern)]]
     })
 
     this.searchForm=this.fb.group({
@@ -33,6 +35,12 @@ export class RegisterFormComponent implements OnInit {
     
   }
 
+public trimField(formGroup:FormGroup){
+  Object.keys(formGroup.controls).forEach((key)=>{
+    formGroup.get(key)?.setValue(formGroup.get(key)?.value.trim())
+  })
+
+}
 
   validateAllFormFields(formGroup: FormGroup) {         
     Object.keys(formGroup.controls).forEach(field => {  
@@ -45,6 +53,7 @@ export class RegisterFormComponent implements OnInit {
     });
   }
 
+  
   get m (){
     return this.register.controls
   }
@@ -56,13 +65,11 @@ export class RegisterFormComponent implements OnInit {
     this.service.postDoctors(this.register.value).subscribe(res=>{
       if(this.register.valid){
          this.ch.doctors.push(res); 
+         this.register.reset()
       }else{
        this.validateAllFormFields(this.register)
-
-      }
-      
+      }      
     })
-  
   }
 
 
@@ -74,7 +81,6 @@ export class RegisterFormComponent implements OnInit {
     let queryString = ''
     firstCharacter=='@' ? queryString = `username=${this.keyWord.substring(1)}`: queryString = `name=${this.keyWord}`
     this.service.searchDoctors(queryString).subscribe(res=>{
-      
         this.ch.doctors=res
       
     })
