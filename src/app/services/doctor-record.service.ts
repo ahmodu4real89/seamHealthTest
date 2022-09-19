@@ -15,11 +15,6 @@ apiUrl:string=`https://jsonplaceholder.typicode.com`
 }
 
 
-
-public searchDoctors(param:string){
-  return this.http.get<DoctorList[]>(`${this.apiUrl}/users?${param}`);
-}
-
 public postDoctors(body:any){
   return this.http.post<DoctorList[]>(`${this.apiUrl}/users`, body);
 }

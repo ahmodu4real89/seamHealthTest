@@ -8,6 +8,7 @@ import { DoctorRecordService } from './../../services/doctor-record.service';
 })
 export class DoctorListComponent implements OnInit {
   doctors:any[]=[];
+  doctorList:any[];
   constructor(private service:DoctorRecordService) { }
 
   ngOnInit(): void {
@@ -15,7 +16,8 @@ export class DoctorListComponent implements OnInit {
     
     this.service.getDoctors().subscribe(res=>{
       console.log(res, "result")
-      return this.doctors=res
+     this.doctors=res;
+     this.doctorList=res
     })
 
   }

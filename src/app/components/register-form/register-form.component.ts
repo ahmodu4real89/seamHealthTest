@@ -1,3 +1,4 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {  Validators, FormBuilder, FormGroup, FormControl} from '@angular/forms';
 import { DoctorRecordService } from 'src/app/services/doctor-record.service';
@@ -16,6 +17,7 @@ export class RegisterFormComponent implements OnInit {
   keyWord:string;
   register!: FormGroup;
   searchForm!:FormGroup;
+  
   emailPattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
   webPattern="(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?";
   ngOnInit(): void {
@@ -61,6 +63,7 @@ public trimField(formGroup:FormGroup){
   get s (){
     return this.searchForm.controls
   }
+  
   onSubmit(): void{
     this.service.postDoctors(this.register.value).subscribe(res=>{
       if(this.register.valid){
@@ -72,17 +75,18 @@ public trimField(formGroup:FormGroup){
     })
   }
 
+  numericalOnly(event:any){
+    return (event.charCode == 8 || event.charCode == 0)? null : event.charCode >= 48 && event.charCode <= 57;
+  }
 
-  searchDoctors(){
-    if(!this.keyWord.trim().length){
-      return 
-    }
-    const firstCharacter = this.keyWord[0]
-    let queryString = ''
-    firstCharacter=='@' ? queryString = `username=${this.keyWord.substring(1)}`: queryString = `name=${this.keyWord}`
-    this.service.searchDoctors(queryString).subscribe(res=>{
-        this.ch.doctors=res
-      
-    })
+
+  filter(){
+  this.ch.doctors=this.ch.doctorList;
+  this.keyWord=  this.keyWord.charAt(0).toUpperCase() + this.keyWord.slice(1)
+  this.ch.doctors = this.ch.doctors.filter(doctor => { 
+     return doctor.username.includes(this.keyWord) || doctor.name.includes(this.keyWord)
+    
+  })
+  
   }
 }
